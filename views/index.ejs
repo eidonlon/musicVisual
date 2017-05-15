@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+  <header>
+    <h1><%= title %></h1>
+    <p class="voice">Volume <input id="volume" type="range" min="0" max="100" value="50" name=""></p>
+    <ul class="type" id="type">
+       <li data-type="dot">dot</li>
+       <li data-type="column" class="select">Column</li>
+       <!-- <li data-type="wave" >paino</li> -->
+     </ul>
+  </header>
+  <div class="menu">
+  	<ul>
+  	<% for(var i=0;i<nameList.length;i++){ %>
+  		<li title= "<%= nameList[i] %>"><%= nameList[i] %></li>
+  	<% } %>
+  	</ul>
+  </div>
+  <div class="content"></div>
+  </body>
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="javascripts/common.js"></script>
+  <script type="text/javascript">
+  	
+  </script>
+</html>
