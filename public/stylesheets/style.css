@@ -29,18 +29,18 @@ header h1{
 }
 #alltime{width:300px;}
 .left{
-	  left:10px;
-      top:170px;
-      bottom:10px;
-      width:15%;
-      border:1px solid #fff;
+	left:10px;
+	top:170px;
+	bottom:10px;
+	width:15%;
+	border:1px solid #fff;
  }
  #style{
-		position: relative;
-		width: 100%;
-		height: 35px;
-		border: 1px solid #ccc;
-		line-height: 35px;
+	position: relative;
+	width: 100%;
+	height: 35px;
+	border: 1px solid #ccc;
+	line-height: 35px;
 }
 #style input{
 	opacity: 0;
@@ -71,14 +71,16 @@ header h1{
 .left ul li.selected{
 	color: green;
 } 
-.type{margin-bottom: 12px;} 
+.type{
+	margin-bottom: 12px;
+} 
 .type li{
-	  display: inline-block;
-	  width: 70px;
-      padding: 5px;
-      border: 1px solid #ccc;
-      margin-left: -5px;
-      border-radius: 4px;
+	display: inline-block;
+	width: 70px;
+	padding: 5px;
+	border: 1px solid #ccc;
+	margin-left: -5px;
+	border-radius: 4px;
   }
 .select{
 	background-color: white;
