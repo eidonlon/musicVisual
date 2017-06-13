@@ -92,7 +92,24 @@ header h1{
 	bottom:10px;
 	left:-webkit-calc(15% + 20px);
 	left:calc(15% + 20px);
-}   
+}  
+.for-input{
+	display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    height: 50px;
+    border: 1px solid #fff;
+    padding: 10px;
+    cursor: pointer;
+}
+.for-input:hover{
+	border-color:#c02c21;
+	color:#c02c21;
+}
+#add{
+	opacity: 0;
+	display: none;
+} 
 input[type="range"]{
 	-webkit-appearance:none;
 	height: 8px;

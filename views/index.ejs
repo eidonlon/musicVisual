@@ -8,15 +8,15 @@
     <header>
        <h1><%= title %></h1>
        <ul class="type" id="type">
-         <li data-type="dot">dot</li>
-         <li data-type="column" class="select">Column</li>
+         <li data-type="dot">柱形图</li>
+         <li data-type="column" class="select">圆点图</li>
        </ul>
-       <p>volume <input type="range" id="volume" mix="0" max="100" value="50">
-          time <input type="range" id="alltime" mix="0" value="0"><span id="time"></span>
+       <p>音量 <input type="range" id="volume" mix="0" max="100" value="50">
+          时间 <input type="range" id="alltime" mix="0" value="0"><span id="time"></span>
        </p>
     </header>
     <div class="left">
-       <input type="file" onchange="return run(this.files);" id="add" />
+       <label for="add" class="for-input">选择本地音频<input type="file" onchange="return run(this.files);" id="add" /></label>
        <ul id="list"> 
        <% music.forEach(function(name){%>
           <li title="<%= name %>"><%= name %></li>
