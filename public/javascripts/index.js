@@ -21,12 +21,13 @@ for(var i = 0; i < lis.length; i++){
 			lis[j].className = "";
 		}
 		this.className = "selected";
-		mv.play("/media/"+this.title);
+		mv.play("/media/"+this.title,"#alltime");
 	}
 }
 
 box.appendChild(canvas);
-
+resize();
+window.onresize=resize;
 
 function random(m,n) {  //返回m到n之间的整数
 	return Math.round(Math.random()*(n - m) + m);
@@ -61,11 +62,8 @@ function resize() {
 
 	 getDots();
 }
-resize();
-window.onresize=resize;
 
 function draw(arr) {
-
 	ctx.clearRect(0, 0, width, height);
 	var w = width / size;
 	var cw = w * 0.7;
@@ -95,28 +93,10 @@ function draw(arr) {
         	ctx.fill();
         	o.x += o.dx;
         	o.x = o.x > width ? 0 : o.x;
-
-
 		}
-		// else if(draw.type == "wave"){
-
-		// 	  ctx.lineWidth = 2;
-		//       ctx.strokeStyle = 'rgb(255, 255, 255)';
-		//       ctx.beginPath();
-
-
-		//  		var sliceWidth = width / size;  //两点之间的间距
-		// 	    var v = arr[i] / 256;   
-		
-		//           ctx.lineTo(o.x, o.y);
-		         
-		//         x += sliceWidth;     	
-		// 	    ctx.stroke();
-	 //  }
 	}
 }
 draw.type = "column";
-
 
 for(var i = 0; i< types.length; i++){
 	types[i].onclick = function() {
@@ -138,13 +118,14 @@ $("#upload").onchange = function() {
 	var fr = new FileReader();
 
 	fr.onload = function(e) {
-		visualizer.play(e.target.resulr);
+		visualizer.play(e.target.resulr,"#alltime");
 
 	}
 	fr.readAsArrayBuffer(file);
 	$(".play")&& ($(".play").className = "");
 }
 Dots.dotMode = "random";
+
 canvas.onclick = function() {
 	if(draw.type == "dot"){
 		for (var i = 0; i < Dots.length; i++) {
@@ -155,5 +136,5 @@ canvas.onclick = function() {
 }
 function run(files){
     var blob = window.URL.createObjectURL(files[0]);
-    mv.play(blob);
+    mv.play(blob,"#alltime");
 }
