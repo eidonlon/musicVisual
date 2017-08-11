@@ -29,6 +29,15 @@ MusicVisualizer.prototype = {
         }
         this.xhr.send();
     },
+    loadOnline:function(url,fun){
+        this.xhr.abort();
+        this.xhr.open("GET",url);
+        var self = this;
+        this.xhr.onload = function() {
+            fun(self.xhr.response);
+        }
+        this.xhr.send();
+    },
     decode:function(arraybuffer,fun){
         MusicVisualizer.ac.decodeAudioData(arraybuffer,function(buffer) {
             fun(buffer);
@@ -36,11 +45,10 @@ MusicVisualizer.prototype = {
             console.log(err);
         });
     },
-    play:function(path,elmObj){
+    play:function(path,timeLine,timeShow){
         var n = ++this.count;
         var self = this;
         this.source&& this.stop();
-
         if(path instanceof ArrayBuffer){
             self.decode(path,function() {
                 self.source = this;
@@ -58,19 +66,18 @@ MusicVisualizer.prototype = {
                 bs[bs.start?"start":"noteOn"](0);
 
                 self.source = bs;
-                self.allTime = Math.floor( Math.floor(bs.buffer.duration)/60)  +  ":"+ (Math.floor(bs.buffer.duration)%60);
+                self.allTime = self.setTime(bs.buffer.duration);
                 self.cTime = MusicVisualizer.ac.currentTime;
                 self.second = Math.floor(bs.buffer.duration);
-                self.vedioAllTime(elmObj,self.allTime,self.second,self.count,self.cTime)
+                self.vedioAllTime(timeLine,timeShow,self.allTime,self.second,self.count,self.cTime,n)
             });
-            
         });
-        }
+       }
     },
     stop:function(){
         this.source[this.source.stop ? "stop" : "noteOff"](0);
     },
-    changeValue:function(){
+    changeValue:function(percent){
         this.gainNode.gain.value = percent * percent;
     },
     visualize:function(){
@@ -86,20 +93,33 @@ MusicVisualizer.prototype = {
         }
         requestAnimationFrame(v);
     },
-    vedioAllTime:function(obj,allTime,second,count,cTime){
-        $(obj)[0].innerHTML = allTime;
-               var timer = null;
-               var a = $(obj)[0];
-               a.max = second;
-                 setTimeout(function(){
-                     timer = setInterval(function(){
-                        a.value = Number(a.value) + 1;
-                        if($(obj)[0].value >= second || n !=count){
-                            clearInterval(timer);
-                            $(obj)[0].value = 0;
-                        }
-                     },1000);
-                  },cTime);
+    vedioAllTime:function(timeLine,timeShow,allTime,second,count,cTime,n){
+        var self = this;
+           var i = 0;
+           var a = $(timeLine)[0];
+           a.max = second;
+           a.value = 0;
+           clearInterval(window.timer);
+
+           $(timeShow)[0].innerHTML = allTime;
+           $(timeShow)[0].style.display = "inline-block";
+            window.timer = setInterval(function(){
+                a.value = Number(a.value) + 1;
+                if($(timeLine)[0].value >= second || n !=count){
+                    clearInterval(timer);
+                    $(timeLine)[0].value = 0;
+                }
+                $(timeShow)[0].innerHTML = self.setTime(Number(self.getSeconds(allTime) - a.value));
+            },1000);
+    },
+    getSeconds:function(timestr){
+        var secondLsit = timestr.split(":");
+        return Number(secondLsit[0]*60) + Number(secondLsit[1]);
+    },
+    setTime:function(seconds){
+        　var min = Math.floor( Math.floor(seconds)/60),
+              sec = String(Math.floor(seconds)%60).length == 1 ? "0"+(Math.floor(seconds)%60) :　(Math.floor(seconds)%60);
+       return  min+ ":"+ sec;
     }
 }
 

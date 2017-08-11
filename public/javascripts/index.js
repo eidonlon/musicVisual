@@ -21,7 +21,8 @@ for(var i = 0; i < lis.length; i++){
 			lis[j].className = "";
 		}
 		this.className = "selected";
-		mv.play("/media/"+this.title,"#alltime");
+		mv.play("/media/"+this.title,"#alltime","#time");
+		$("#time")[0].style.display = "none";
 	}
 }
 
@@ -65,13 +66,13 @@ function resize() {
 
 function draw(arr) {
 	ctx.clearRect(0, 0, width, height);
-	var w = width / size;
+	var w = width / size;  //size == arr.length
 	var cw = w * 0.7;
 	var capH = cw > 10 ? 10 : cw;
 	ctx.fillStyle = line;
 	for(var i = 0; i < size; i++){
 		var o = Dots[i];
-		if(draw.type === "column"){    //绘制柱状图
+		if(draw.type === "column"){  
 			var h = arr[i] / 256 * height; 
             ctx.fillRect(w * i, height - h,cw, h);
             ctx.fillRect(w * i, height - (o.cap+capH), cw, capH);
@@ -82,7 +83,7 @@ function draw(arr) {
             if(h > 0 && o.cap < h + 40){
             	o.cap = h + 40 >  height - capH ?height - capH : h + 40;
             }
-		}else if(draw.type === "dot"){    //绘制点状图
+		}else if(draw.type === "dot"){  
 			ctx.beginPath();   
         	var r = 10 + arr[i] / 256 * (height > width ? width : height) / 10;
         	ctx.arc(o.x, o.y, r, 0, Math.PI*2, true);
@@ -93,6 +94,45 @@ function draw(arr) {
         	ctx.fill();
         	o.x += o.dx;
         	o.x = o.x > width ? 0 : o.x;
+		}else if(draw.type === "line"){
+			var baseH = height/2 - 100;
+			var baseW = width/4;
+			if(i == 0){
+				ctx.beginPath();
+				ctx.lineWidth = 2;
+				ctx.moveTo(0,baseH);
+				ctx.lineTo(width,baseH);
+				ctx.stroke();
+				ctx.moveTo(width/2,baseH);
+
+				var grd=ctx.createLinearGradient(0,baseH,0,height);
+				grd.addColorStop(0,"rgba(10,112,216,.2)");
+				grd.addColorStop(1,"rgba(8,8,8,.0)");
+
+				ctx.fillStyle=grd;
+				ctx.fillRect(0,baseH,width,height);
+			}else{
+				ctx.lineTo(width/2+i*cw,baseH-arr[i]);
+				ctx.lineTo(width/2+i*cw,baseH+arr[i]);
+				ctx.stroke();
+				ctx.beginPath();
+				
+				ctx.lineTo(width/2-i*cw,baseH-arr[i]);
+				ctx.lineTo(width/2-i*cw,baseH+arr[i]);
+				ctx.stroke();
+				ctx.beginPath();
+				var lines = ctx.createLinearGradient(0,0,width,height);
+				// var color = "rgba("+random(0,255)+","+random(0,255)+","+random(0,255)+",1)"; 
+				lines.addColorStop(0,"red");
+				// if(i % 2 == 0){
+	   //      		lines.addColorStop(.5,color);
+				// }else{
+	   //      		lines.addColorStop(0.5,"#5dad4d");
+				// }
+				lines.addColorStop(1,"blue");
+				ctx.strokeStyle = lines;
+				ctx.stroke();
+			}
 		}
 	}
 }
@@ -118,8 +158,7 @@ $("#upload").onchange = function() {
 	var fr = new FileReader();
 
 	fr.onload = function(e) {
-		visualizer.play(e.target.resulr,"#alltime");
-
+		visualizer.play(e.target.resulr,"#alltime","#time");
 	}
 	fr.readAsArrayBuffer(file);
 	$(".play")&& ($(".play").className = "");
@@ -135,6 +174,18 @@ canvas.onclick = function() {
   }
 }
 function run(files){
-    var blob = window.URL.createObjectURL(files[0]);
-    mv.play(blob,"#alltime");
+    var blob = window.URL.createObjectURL(files[0]),
+    	fileName = files[0].name;
+
+		$("#locale-file")[0].innerHTML = "<li class='selected' title="+fileName+">"+fileName+"</li>";
+    mv.play(blob,"#alltime","#time");
 }
+$("#online")[0].addEventListener("click",function(){
+	var datas = mv.loadOnline("https://api.imjad.cn/cloudmusic/?id=185709",function(data){
+		console.log(JSON.parse(data).data[0].url)
+		// var url = JSON.parse(data).data[0].url;
+		// var _url = url.split(":");
+		// url = _url[0].substr(0,4) + ":" + _url[1];
+		mv.play(JSON.parse(data).data[0].url,"#alltime","#time");
+	});
+})

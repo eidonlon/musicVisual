@@ -10,24 +10,26 @@
        <ul class="type" id="type">
          <li data-type="dot">圆点图</li>
          <li data-type="column" class="select">柱状图</li>
+         <li data-type="line" >折线图</li>
        </ul>
        <p>音量 <input type="range" id="volume" mix="0" max="100" value="50">
           时间 <input type="range" id="alltime" mix="0" value="0"><span id="time"></span>
        </p>
     </header>
     <div class="left">
+       <!-- <input type="button" id="online" value="在线"> -->
        <label for="add" class="for-input">选择本地音频<input type="file" onchange="return run(this.files);" id="add" /></label>
        <ul id="list"> 
        <% music.forEach(function(name){%>
           <li title="<%= name %>"><%= name %></li>
         <%})%>
+          <ul id="locale-file"></ul>
        </ul>
     </div>
     <div class="right" id="box"></div>
      <script type="text/javascript" src="/javascripts/MusicVisualizer.js">
      </script>
     <script type="text/javascript" src="/javascripts/index.js"></script>
-   
   </body>
 </html>
 
