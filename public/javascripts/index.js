@@ -180,12 +180,4 @@ function run(files){
 		$("#locale-file")[0].innerHTML = "<li class='selected' title="+fileName+">"+fileName+"</li>";
     mv.play(blob,"#alltime","#time");
 }
-// $("#online")[0].addEventListener("click",function(){
-// 	var datas = mv.loadOnline("https://api.imjad.cn/cloudmusic/?id=185709",function(data){
-// 		console.log(JSON.parse(data).data[0].url)
-		// var url = JSON.parse(data).data[0].url;
-		// var _url = url.split(":");
-		// url = _url[0].substr(0,4) + ":" + _url[1];
-// 		mv.play(JSON.parse(data).data[0].url,"#alltime","#time");
-// 	});
-// })
+
